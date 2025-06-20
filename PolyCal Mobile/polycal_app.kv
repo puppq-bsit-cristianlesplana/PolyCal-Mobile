@@ -1,0 +1,1861 @@
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import dp kivy.metrics.dp
+
+ScreenManager:
+    transition: FadeTransition()
+    LoginScreen:
+        name: 'login'
+    SignupScreen:
+        name: 'signup'
+    MainScreen:
+        name: 'main'
+    CalendarScreen:
+        name: 'calendar'
+    ProfileScreen:
+        name: 'profile'
+    AdminScreen:
+        name: 'admin'
+    SettingsScreen:
+        name: 'settings'
+
+<ClickableLabel@ButtonBehavior+Label>:
+    on_press:
+        if hasattr(self, 'screen_target'): app.root.current = self.screen_target
+        else: app.root.current = 'login'
+    color: 0, 0, 0, 1
+    font_size: '18sp'
+
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            # Add white background with 50% opacity to create a fading effect
+            Color:
+                rgba: 1, 1, 1, 0.5  # White with 50% opacity
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            # Add background image with some opacity
+            Color:
+                rgba: 1, 1, 1, 0.7  # White with 70% opacity
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'background.png'  # Path to the PUP monument image
+
+        # Red header
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            padding: dp(10)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Image:
+                source: 'PUPlogo.png'  # Updated to use the PUP logo
+                size_hint_x: None
+                width: dp(30)
+                fit_mode: 'contain'
+            
+            Label:
+                text: "PolyCal"
+                font_size: '16sp'
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+                padding: [dp(10), 0]  # [padding_x, padding_y]
+
+        # Main content area with PUP logo
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(10)
+            spacing: dp(15)
+
+            Image:
+                source: 'PUPlogo.png'  # Updated to use the PUP logo
+                size_hint_y: None
+                height: dp(150)
+                fit_mode: 'contain'
+                pos_hint: {'center_x': 0.5, 'center_y': 5}
+
+            Label:
+                text: "PolyCal"
+                font_size: '32sp'
+                bold: True
+                color: 0.85, 0.15, 0.15, 1  # Red color
+                size_hint_y: None
+                pos_hint: {'center_x': 0.5, 'center_y': 1}
+                height: dp(1)
+
+        # White card for login
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            padding: dp(20)
+            
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: None, None
+                width: dp(280)
+                height: dp(280)
+                padding: dp(20)
+                spacing: dp(15)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15, 15, 15, 15]
+                    Color:
+                        rgba: 0.9, 0.9, 0.9, 1
+                    Line:
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, 15]
+                        width: 1
+
+                Label:
+                    text: "PUP Student Calendar"
+                    font_size: '22sp'
+                    bold: True
+                    color: 0.85, 0.15, 0.15, 1  # Red color
+                    size_hint_y: None
+                    height: dp(35)
+
+                Label:
+                    text: "Sign in to your session"
+                    font_size: '12sp'
+                    color: 0.5, 0.5, 0.5, 1
+                    size_hint_y: None
+                    height: dp(20)
+
+                # Username/ID input
+                TextInput:
+                    id: username
+                    hint_text: "Student ID"
+                    multiline: False
+                    size_hint_y: None
+                    height: dp(40)
+                    padding: [dp(10), dp(10)]
+
+                # Login button with red background
+                Button:
+                    text: "Login"
+                    size_hint_y: None
+                    height: dp(50)
+                    background_normal: ''
+                    background_color: 0.85, 0.15, 0.15, 1  # Red color
+                    color: 1, 1, 1, 1
+                    font_size: '18sp'
+                    bold: True
+                    on_release: root.login()
+                    canvas.before:
+                        Color:
+                            rgba: 0.85, 0.15, 0.15, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [10, 10, 10, 10]
+
+                # Don't have an account text and signup link
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(30)
+
+                    Label:
+                        text: "Don't have an account?"
+                        color: 0.5, 0.5, 0.5, 1
+                        font_size: '14sp'
+                        size_hint_x: 0.6
+                        halign: 'right'
+                        valign: 'middle'
+                        text_size: self.size
+
+                    ClickableLabel:
+                        text: "Sign up"
+                        color: 0.2, 0.6, 1, 1
+                        font_size: '14sp'
+                        size_hint_x: 0.3
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+                        padding_x: dp(5)
+                        screen_target: 'signup'
+
+        # Add a spacer to push content up (replacing the footer)
+        Widget:
+            size_hint_y: 0.1
+
+<SignupScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1  # Light gray background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Red header
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            padding: dp(10)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            Image:
+                source: 'PUPlogo.png'  # Add the PUP star logo
+                size_hint_x: None
+                width: dp(30)
+                fit_mode: 'contain'
+            
+            Label:
+                text: "PolyCal"
+                font_size: '16sp'
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+                padding: [dp(10), 0]  # [padding_x, padding_y]
+
+        # Main content area
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(30)
+            spacing: dp(20)
+
+            # Background PUP logo (faded and perfectly centered)
+            FloatLayout:
+                size_hint_y: None
+                height: 0
+                Image:
+                    source: 'PUPlogo.png'
+                    opacity: 0.15
+                    size_hint: None, None
+                    width: 400
+                    height: 400
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    fit_mode: 'contain'
+
+            # Sign up title
+            Label:
+                text: "Sign up"
+                font_size: '28sp'
+                bold: True
+                color: 0.85, 0.15, 0.15, 1  # Red color
+                size_hint_y: None
+                height: dp(50)
+                halign: 'center'
+
+            # Student ID input with rounded corners
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                padding: dp(5)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [25, 25, 25, 25]
+                    Color:
+                        rgba: 0.8, 0.8, 0.8, 1
+                    Line:
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, 25]
+                        width: 1
+
+                TextInput:
+                    id: id_input
+                    hint_text: 'Student ID number'
+                    multiline: False
+                    background_color: 0, 0, 0, 0  # Transparent background
+                    foreground_color: 0.3, 0.3, 0.3, 1
+                    cursor_color: 0.3, 0.3, 0.3, 1
+                    font_size: '16sp'
+                    padding: [20, 15, 0, 0]
+
+            # Full Name input with rounded corners
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                padding: dp(5)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [25, 25, 25, 25]
+                    Color:
+                        rgba: 0.8, 0.8, 0.8, 1
+                    Line:
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, 25]
+                        width: 1
+
+                TextInput:
+                    id: name_input
+                    hint_text: 'Full Name'
+                    multiline: False
+                    background_color: 0, 0, 0, 0  # Transparent background
+                    foreground_color: 0.3, 0.3, 0.3, 1
+                    cursor_color: 0.3, 0.3, 0.3, 1
+                    font_size: '16sp'
+                    padding: [20, 15, 0, 0]
+
+            # Program and Section input with rounded corners
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                padding: dp(5)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [25, 25, 25, 25]
+                    Color:
+                        rgba: 0.8, 0.8, 0.8, 1
+                    Line:
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, 25]
+                        width: 1
+
+                TextInput:
+                    id: program_input
+                    hint_text: 'Program and Section'
+                    multiline: False
+                    background_color: 0, 0, 0, 0  # Transparent background
+                    foreground_color: 0.3, 0.3, 0.3, 1
+                    cursor_color: 0.3, 0.3, 0.3, 1
+                    font_size: '16sp'
+                    padding: [20, 15, 0, 0]
+
+            # Date of Birth input with rounded corners
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                padding: dp(5)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [25, 25, 25, 25]
+                    Color:
+                        rgba: 0.8, 0.8, 0.8, 1
+                    Line:
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, 25]
+                        width: 1
+
+                TextInput:
+                    id: dob_input
+                    hint_text: 'Date of Birth  DD/MM/YYYY'
+                    multiline: False
+                    background_color: 0, 0, 0, 0  # Transparent background
+                    foreground_color: 0.3, 0.3, 0.3, 1
+                    cursor_color: 0.3, 0.3, 0.3, 1
+                    font_size: '16sp'
+                    padding: [20, 15, 0, 0]
+
+            # Spacer
+            Widget:
+                size_hint_y: 0.2
+
+            # Create Account button with red background
+            Button:
+                text: "Create Account"
+                size_hint_y: None
+                height: dp(50)
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Red color
+                color: 1, 1, 1, 1
+                font_size: '18sp'
+                bold: True
+                on_release: root.create_account()
+                canvas.before:
+                    Color:
+                        rgba: 0.85, 0.15, 0.15, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [25, 25, 25, 25]
+
+            # Back to login (invisible button)
+            Button:
+                text: "Back to Login"
+                size_hint_y: None
+                height: dp(40)
+                background_normal: ''
+                background_color: 0, 0, 0, 0  # Transparent
+                color: 0.85, 0.15, 0.15, 1  # Red color
+                font_size: '16sp'
+                on_release: app.root.current = 'login'
+
+        # Red footer
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1  # Light gray background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            # Add a subtle background image with low opacity
+            Color:
+                rgba: 1, 1, 1, 0.1  # Very low opacity
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'background.jpg'
+
+        # Red header with logo and title
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: dp(10)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Image:
+                source: 'PUPlogo.png'
+                size_hint_x: None
+                width: dp(40)
+                fit_mode: 'contain'
+
+            Label:
+                text: "PolyCal"
+                font_size: '24sp'
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+                padding: [dp(10), 0]  # [padding_x, padding_y]
+
+        # Main content area with ScrollView
+        BoxLayout:
+            orientation: 'vertical'
+            padding: [dp(20), dp(10), dp(20), dp(10)]
+
+            # Background PUP logo (faded and perfectly centered)
+            FloatLayout:
+                size_hint_y: None
+                height: 0
+                Image:
+                    source: 'PUPlogo.png'
+                    opacity: 0.15
+                    size_hint: None, None
+                    width: 400
+                    height: 400
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    fit_mode: 'contain'
+
+            # Welcome message
+            Label:
+                id: welcome_label
+                text: 'Hello, Iska!'
+                font_size: '28sp'
+                bold: True
+                color: 0.85, 0.15, 0.15, 1  # Red color
+                size_hint_y: None
+                height: dp(50)
+                halign: 'left'
+                text_size: self.width, None
+            
+            # Month navigation
+            BoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                
+                # Previous month button
+                Button:
+                    size_hint_x: 0.15
+                    background_normal: ''
+                    background_color: 0.7, 0.1, 0.1, 1  # Darker red for better contrast
+                    on_release: root.change_month(-1)
+                    canvas.before:
+                        Color:
+                            rgba: 0.7, 0.1, 0.1, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [8, 8, 8, 8]
+                    canvas.after:
+                        Color:
+                            rgba: 1, 1, 1, 0.3
+                        Line:
+                            rounded_rectangle: (self.x, self.y, self.width, self.height, 8)
+                            width: 1
+                    Image:
+                        source: 'ICON/Back.png'
+                        center: self.parent.center
+                        size: dp(24), dp(24)
+                        fit_mode: 'contain'
+                
+                # Month label
+                Label:
+                    id: month_label
+                    text: "Month Year"
+                    size_hint_x: 0.7
+                    font_size: '18sp'
+                    bold: True
+                    color: 0.85, 0.15, 0.15, 1  # Red color
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                
+                # Next month button
+                Button:
+                    size_hint_x: 0.15
+                    background_normal: ''
+                    background_color: 0.7, 0.1, 0.1, 1  # Darker red for better contrast
+                    on_release: root.change_month(1)
+                    canvas.before:
+                        Color:
+                            rgba: 0.7, 0.1, 0.1, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [8, 8, 8, 8]
+                    canvas.after:
+                        Color:
+                            rgba: 1, 1, 1, 0.3
+                        Line:
+                            rounded_rectangle: (self.x, self.y, self.width, self.height, 8)
+                            width: 1
+                    Image:
+                        source: 'ICON/Next.png'
+                        center: self.parent.center
+                        size: dp(24), dp(24)
+                        fit_mode: 'contain'
+            
+            # Spacer
+            Widget:
+                size_hint_y: None
+                height: dp(10)
+            
+            # Event list container with border
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+                
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.parent.height - dp(10)  # Leave a small margin
+                    size_hint_x: 0.95  # Take 95% of screen width
+                    canvas.before:
+                        Color:
+                            rgba: 0.97, 0.97, 0.97, 1  # Very light gray background
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [10]
+                        Color:
+                            rgba: 0.9, 0.9, 0.9, 1  # Light gray border
+                        Line:
+                            rounded_rectangle: [self.x, self.y, self.width, self.height, 10]
+                            width: 1
+                    
+                    # Scrollable event list
+                    ScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        
+                        BoxLayout:
+                            id: event_list
+                            orientation: 'vertical'
+                            spacing: dp(0)  # No spacing here as we add it in the cards
+                            size_hint_y: None
+                            height: self.minimum_height
+                            padding: [dp(10), dp(10), dp(10), dp(10)]
+
+        # Navigation bar at the bottom
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            # Home button (current screen - highlighted)
+            Button:
+                background_normal: ''
+                background_color: 0.12, 0.47, 0.95, 1  # Blue highlight for current screen
+                on_release: app.root.current = 'main'
+                Image:
+                    source: 'ICON/Home.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+            
+            # Calendar button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'calendar'
+                Image:
+                    source: 'ICON/Calendar.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+            
+            # Profile button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'profile'
+                Image:
+                    source: 'ICON/Profile.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+            
+            # Settings button (three dots)
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'settings'
+                Image:
+                    source: 'ICON/Settings.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+<AddEventPopup@Popup>:
+    title: "Add New Event"
+    size_hint: 0.9, 0.8
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(16)
+
+        TextInput:
+            id: title_input
+            hint_text: "Event Title"
+            multiline: False
+
+        TextInput:
+            id: description_input
+            hint_text: "Description"
+            multiline: True
+
+        TextInput:
+            id: tagged_ids
+            hint_text: "Tag Student IDs (comma separated)"
+            multiline: False
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: dp(10)
+            Button:
+                text: "Generate Link"
+                on_release: root.generate_link()
+            TextInput:
+                id: link_output
+                hint_text: "Event Link"
+                readonly: True
+
+        BoxLayout:
+            spacing: dp(10)
+            Button:
+                text: "Cancel"
+                on_release: root.dismiss()
+            Button:
+                text: "Save Event"
+                on_release: root.save_event()
+
+<CalendarScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1  # Light gray background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Red header with logo and title
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: dp(10)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Image:
+                source: 'PUPlogo.png'
+                size_hint_x: None
+                width: dp(40)
+                fit_mode: 'contain'
+
+            Label:
+                text: "PolyCal"
+                font_size: '24sp'
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+                padding: [dp(10), 0]  # [padding_x, padding_y]
+        
+        # Search bar with inbox icon
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: [dp(20), dp(10), dp(20), dp(10)]
+            spacing: dp(10)
+            
+            # Search bar
+            BoxLayout:
+                size_hint_x: 0.85
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1  # White background
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 20, 20]
+                    Color:
+                        rgba: 0.9, 0.9, 0.9, 1
+                    Line:
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, 20]
+                        width: 1
+                
+                Label:
+                    text: "🔍"
+                    size_hint_x: None
+                    width: dp(30)
+                    fit_mode: 'contain'
+                    padding: dp(10)
+                
+                TextInput:
+                    id: search_input
+                    hint_text: "Search: events, dates (June 15 2025), months (June 2025)"
+                    multiline: False
+                    background_color: 0, 0, 0, 0  # Transparent
+                    foreground_color: 0.3, 0.3, 0.3, 1
+                    cursor_color: 0.3, 0.3, 0.3, 1
+                    padding: [dp(10), dp(10), dp(10), dp(10)]
+                    font_size: '16sp'
+                    on_text_validate: root.search_events(self.text)
+            
+            # Inbox icon with badge
+            BoxLayout:
+                size_hint_x: 0.15
+                
+                Button:
+                    background_normal: ''
+                    background_color: 0, 0, 0, 0  # Transparent
+                    on_release: root.toggle_inbox()
+                    
+                    Image:
+                        source: 'ICON/Inbox.png'
+                        center: self.parent.center
+                        size: dp(30), dp(30)
+                        fit_mode: 'contain'
+                
+                # Badge for unread invitations
+                Label:
+                    id: inbox_badge
+                    text: "0"
+                    size_hint: None, None
+                    size: dp(20), dp(20)
+                    pos: self.parent.width - self.width - 5, self.parent.height - self.height - 5
+                    color: 1, 1, 1, 1
+                    font_size: '12sp'
+                    bold: True
+                    canvas.before:
+                        Color:
+                            rgba: 0.9, 0.1, 0.1, 1  # Red badge
+                        Ellipse:
+                            pos: self.pos
+                            size: self.size
+                    opacity: 0  # Hidden by default
+
+        # Main content area with calendar
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(15)
+
+            # Welcome message
+            Label:
+                id: welcome_label
+                text: 'Hello, Iska!'
+                font_size: '28sp'
+                bold: True
+                color: 0.85, 0.15, 0.15, 1  # Red color
+                size_hint_y: None
+                height: dp(40)
+                halign: 'left'
+                text_size: self.width, None
+
+            # Calendar container with red header
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: dp(350)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1  # White background
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [5]
+                    Color:
+                        rgba: 0.9, 0.9, 0.9, 1
+                    Line:
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, 5]
+                        width: 1
+                
+                # Month navigation (red bar)
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(40)
+                    spacing: dp(10)
+                    canvas.before:
+                        Color:
+                            rgba: 0.85, 0.15, 0.15, 1  # Red color
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    # Previous month button
+                    Button:
+                        size_hint_x: 0.15
+                        background_normal: ''
+                        background_color: 0.7, 0.1, 0.1, 1  # Darker red for better contrast
+                        on_release: root.change_month(-1)
+                        canvas.before:
+                            Color:
+                                rgba: 0.7, 0.1, 0.1, 1
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [8, 8, 8, 8]
+                        canvas.after:
+                            Color:
+                                rgba: 1, 1, 1, 0.3
+                            Line:
+                                rounded_rectangle: (self.x, self.y, self.width, self.height, 8)
+                                width: 1
+                        Image:
+                            source: 'ICON/Back.png'
+                            center: self.parent.center
+                            size: dp(24), dp(24)
+                            fit_mode: 'contain'
+
+                    # Month and year label
+                    Label:
+                        id: month_year_label
+                        text: "Month Year"
+                        size_hint_x: 0.7
+                        font_size: '18sp'
+                        bold: True
+                        color: 1, 1, 1, 1  # White color
+                        halign: 'center'
+                        valign: 'middle'
+                        text_size: self.size
+
+                    # Next month button
+                    Button:
+                        size_hint_x: 0.15
+                        background_normal: ''
+                        background_color: 0.7, 0.1, 0.1, 1  # Darker red for better contrast
+                        on_release: root.change_month(1)
+                        canvas.before:
+                            Color:
+                                rgba: 0.7, 0.1, 0.1, 1
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [8, 8, 8, 8]
+                        canvas.after:
+                            Color:
+                                rgba: 1, 1, 1, 0.3
+                            Line:
+                                rounded_rectangle: (self.x, self.y, self.width, self.height, 8)
+                                width: 1
+                        Image:
+                            source: 'ICON/Next.png'
+                            center: self.parent.center
+                            size: dp(24), dp(24)
+                            fit_mode: 'contain'
+                
+                # Day headers
+                GridLayout:
+                    id: day_headers
+                    cols: 7
+                    size_hint_y: None
+                    height: dp(30)
+                    
+                    Label:
+                        text: 'SUN'
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: '12sp'
+                    Label:
+                        text: 'MON'
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: '12sp'
+                    Label:
+                        text: 'TUES'
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: '12sp'
+                    Label:
+                        text: 'WED'
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: '12sp'
+                    Label:
+                        text: 'THUR'
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: '12sp'
+                    Label:
+                        text: 'FRI'
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: '12sp'
+                    Label:
+                        text: 'SAT'
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: '12sp'
+                
+                # Calendar grid
+                GridLayout:
+                    id: calendar_grid
+                    cols: 7
+                    size_hint_y: 1
+                    canvas.before:
+                        Color:
+                            rgba: 1, 1, 1, 1  # White background
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+            
+            # Action buttons
+            Button:
+                text: "Add Events"
+                size_hint_y: None
+                height: dp(50)
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Red color
+                color: 1, 1, 1, 1
+                font_size: '18sp'
+                bold: True
+                on_release: root.open_add_event_popup()
+                canvas.before:
+                    Color:
+                        rgba: 0.85, 0.15, 0.15, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [25, 25, 25, 25]
+            
+            Button:
+                text: "Add Notes"
+                size_hint_y: None
+                height: dp(50)
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Red color
+                color: 1, 1, 1, 1
+                font_size: '18sp'
+                bold: True
+                on_release: root.show_add_note_popup()
+                canvas.before:
+                    Color:
+                        rgba: 0.85, 0.15, 0.15, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [25, 25, 25, 25]
+
+        # Navigation bar at the bottom
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            # Home button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'main'
+                Image:
+                    source: 'ICON/Home.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Calendar button (current screen - highlighted)
+            Button:
+                background_normal: ''
+                background_color: 0.12, 0.47, 0.95, 1  # Blue highlight for current screen
+                on_release: app.root.current = 'calendar'
+                Image:
+                    source: 'ICON/Calendar.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Profile button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'profile'
+                Image:
+                    source: 'ICON/Profile.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Settings button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'settings'
+                Image:
+                    source: 'ICON/Settings.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+<ProfileScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1  # Light gray background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Red header
+        BoxLayout:
+            size_hint_y: None
+            height: dp(70)
+            padding: dp(10)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Image:
+                source: 'PUPlogo.png'  # Updated to use the PUP logo
+                size_hint_x: None
+                width: dp(50)
+                fit_mode: 'contain'
+
+            Label:
+                text: "PolyCal"
+                font_size: '24sp'
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+                padding: [dp(10), 0]  # [padding_x, padding_y]
+
+        # Main content area with ScrollView
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(20)
+                spacing: dp(15)
+                size_hint_y: None
+                height: self.minimum_height
+
+                # Background PUP logo (faded and centered)
+                FloatLayout:
+                    size_hint_y: None
+                    height: dp(0)
+                    Image:
+                        source: 'PUPlogo.png'
+                        opacity: 0.1
+                        size_hint: None, None
+                        width: 400
+                        height: 400
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                        fit_mode: 'contain'
+
+                # User name
+                Label:
+                    id: user_name_label
+                    text: 'User Name'
+                    font_size: '28sp'
+                    bold: True
+                    color: 0.85, 0.15, 0.15, 1  # Red color
+                    size_hint_y: None
+                    height: dp(40)
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.width, None
+
+                # Student ID label
+                Label:
+                    id: student_id_label
+                    text: 'STUDENT ID'
+                    font_size: '14sp'
+                    color: 0.3, 0.3, 0.3, 1
+                    size_hint_y: None
+                    height: dp(20)
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.width, None
+
+                # Profile picture container
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: dp(150)
+                    padding: dp(10)
+                    
+                    # Profile image with camera icon
+                    RelativeLayout:
+                        size_hint: None, None
+                        size: dp(130), dp(130)
+                        pos_hint: {'center_x': 0.5}
+                        
+                        # White background
+                        canvas.before:
+                            Color:
+                                rgba: 1, 1, 1, 1
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [15, 15, 15, 15]
+                        
+                        # Profile image
+                        Image:
+                            id: profile_image
+                            source: root.profile_image_path if root.profile_image_path else 'ICON/Default Profile.png'
+                            size_hint: None, None
+                            size: dp(120), dp(120)
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            fit_mode: 'contain'
+                        
+                        # Upload icon button
+                        Button:
+                            size_hint: None, None
+                            size: dp(30), dp(30)
+                            pos_hint: {'right': 0.95, 'bottom': 0.02}
+                            background_normal: ''
+                            background_color: 0.85, 0.15, 0.15, 1  # Red background to match app theme
+                            on_release: root.open_file_chooser()
+
+                            canvas.before:
+                                Color:
+                                    rgba: 0.85, 0.15, 0.15, 1
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                                    radius: [15, 15, 15, 15]
+                            canvas.after:
+                                Color:
+                                    rgba: 1, 1, 1, 0.3
+                                Line:
+                                    rounded_rectangle: (self.x, self.y, self.width, self.height, 15)
+                                    width: 1
+
+                            Image:
+                                source: 'ICON/Upload (2).png'
+                                center: self.parent.center
+                                size: dp(20), dp(20)
+                                fit_mode: 'contain'
+
+                # Student ID field
+                Label:
+                    text: 'Student ID'
+                    font_size: '16sp'
+                    color: 0.3, 0.3, 0.3, 1
+                    size_hint_y: None
+                    height: dp(30)
+                    halign: 'left'
+                    text_size: self.width, None
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(50)
+                    padding: dp(5)
+                    canvas.before:
+                        Color:
+                            rgba: 1, 1, 1, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [15, 15, 15, 15]
+                        Color:
+                            rgba: 0.9, 0.9, 0.9, 1
+                        Line:
+                            rounded_rectangle: [self.x, self.y, self.width, self.height, 15]
+                            width: 1
+
+                    TextInput:
+                        id: id_input
+                        hint_text: 'Enter your student ID'
+                        multiline: False
+                        background_color: 0, 0, 0, 0  # Transparent background
+                        foreground_color: 0.3, 0.3, 0.3, 1
+                        cursor_color: 0.3, 0.3, 0.3, 1
+                        font_size: '16sp'
+                        padding: [15, 15, 0, 0]
+
+                # Name field
+                Label:
+                    text: 'Name'
+                    font_size: '16sp'
+                    color: 0.3, 0.3, 0.3, 1
+                    size_hint_y: None
+                    height: dp(30)
+                    halign: 'left'
+                    text_size: self.width, None
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(50)
+                    padding: dp(5)
+                    canvas.before:
+                        Color:
+                            rgba: 1, 1, 1, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [15, 15, 15, 15]
+                        Color:
+                            rgba: 0.9, 0.9, 0.9, 1
+                        Line:
+                            rounded_rectangle: [self.x, self.y, self.width, self.height, 15]
+                            width: 1
+
+                    TextInput:
+                        id: name_input
+                        hint_text: 'Enter your name'
+                        multiline: False
+                        background_color: 0, 0, 0, 0  # Transparent background
+                        foreground_color: 0.3, 0.3, 0.3, 1
+                        cursor_color: 0.3, 0.3, 0.3, 1
+                        font_size: '16sp'
+                        padding: [15, 15, 0, 0]
+
+                # Program field
+                Label:
+                    text: 'Program'
+                    font_size: '16sp'
+                    color: 0.3, 0.3, 0.3, 1
+                    size_hint_y: None
+                    height: dp(30)
+                    halign: 'left'
+                    text_size: self.width, None
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(50)
+                    padding: dp(5)
+                    canvas.before:
+                        Color:
+                            rgba: 1, 1, 1, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [15, 15, 15, 15]
+                        Color:
+                            rgba: 0.9, 0.9, 0.9, 1
+                        Line:
+                            rounded_rectangle: [self.x, self.y, self.width, self.height, 15]
+                            width: 1
+
+                    TextInput:
+                        id: program_input
+                        hint_text: 'Enter your program'
+                        multiline: False
+                        background_color: 0, 0, 0, 0  # Transparent background
+                        foreground_color: 0.3, 0.3, 0.3, 1
+                        cursor_color: 0.3, 0.3, 0.3, 1
+                        font_size: '16sp'
+                        padding: [15, 15, 0, 0]
+
+                # Bio field
+                Label:
+                    text: 'Bio'
+                    font_size: '16sp'
+                    color: 0.3, 0.3, 0.3, 1
+                    size_hint_y: None
+                    height: dp(30)
+                    halign: 'left'
+                    text_size: self.width, None
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(100)
+                    padding: dp(5)
+                    canvas.before:
+                        Color:
+                            rgba: 1, 1, 1, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [15, 15, 15, 15]
+                        Color:
+                            rgba: 0.9, 0.9, 0.9, 1
+                        Line:
+                            rounded_rectangle: [self.x, self.y, self.width, self.height, 15]
+                            width: 1
+
+                    TextInput:
+                        id: bio_input
+                        hint_text: 'Tell us about yourself'
+                        multiline: True
+                        background_color: 0, 0, 0, 0  # Transparent background
+                        foreground_color: 0.3, 0.3, 0.3, 1
+                        cursor_color: 0.3, 0.3, 0.3, 1
+                        font_size: '16sp'
+                        padding: [15, 15, 0, 0]
+                        on_text: root.update_char_count(self, self.text)
+                    
+                    Label:
+                        id: char_count_label
+                        text: '0/120'
+                        size_hint: None, None
+                        size: dp(40), dp(20)
+                        pos_hint: {'right': 1, 'bottom': 1}
+                        color: 0.5, 0.5, 0.5, 1
+                        font_size: '12sp'
+
+                # Buttons
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(50)
+                    spacing: dp(10)
+                    padding: [dp(50), 0, dp(50), 0]
+                    
+                    Button:
+                        text: 'Save'
+                        size_hint_x: 0.5
+                        background_normal: ''
+                        background_color: 0.85, 0.15, 0.15, 1  # Red color
+                        color: 1, 1, 1, 1
+                        font_size: '16sp'
+                        on_release: root.save_profile()
+                        canvas.before:
+                            Color:
+                                rgba: 0.85, 0.15, 0.15, 1
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [10, 10, 10, 10]
+                    
+                    Button:
+                        text: 'Cancel'
+                        size_hint_x: 0.5
+                        background_normal: ''
+                        background_color: 0.7, 0.7, 0.7, 1  # Gray color - consistent with new screens
+                        color: 1, 1, 1, 1  # White text for better contrast
+                        font_size: '16sp'
+                        on_release: app.root.current = 'main'
+                        canvas.before:
+                            Color:
+                                rgba: 0.7, 0.7, 0.7, 1
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [10, 10, 10, 10]
+
+        # Navigation bar at the bottom
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            # Home button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'main'
+                Image:
+                    source: 'ICON/Home.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Calendar button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'calendar'
+                Image:
+                    source: 'ICON/Calendar.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Profile button (current screen - highlighted)
+            Button:
+                background_normal: ''
+                background_color: 0.12, 0.47, 0.95, 1  # Blue highlight for current screen
+                on_release: app.root.current = 'profile'
+                Image:
+                    source: 'ICON/Profile.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Settings button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'settings'
+                Image:
+                    source: 'ICON/Settings.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+<SettingsScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1  # Light gray background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Red header
+        BoxLayout:
+            size_hint_y: None
+            height: dp(70)
+            padding: dp(10)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            Image:
+                source: 'PUPlogo.png'  # Updated to use the PUP logo
+                size_hint_x: None
+                width: dp(50)
+                fit_mode: 'contain'
+            
+            Label:
+                text: "PolyCal"
+                font_size: '24sp'
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+                padding: [dp(10), 0]  # [padding_x, padding_y]
+
+        # Main content area
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(15)
+
+            # Background PUP logo (faded and centered)
+            FloatLayout:
+                size_hint_y: None
+                height: 0
+                Image:
+                    source: 'PUPlogo.png'
+                    opacity: 0.1
+                    size_hint: None, None
+                    width: 400
+                    height: 400
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                    fit_mode: 'contain'
+
+            # Settings title
+            Label:
+                text: 'Settings'
+                font_size: '28sp'
+                bold: True
+                color: 0.85, 0.15, 0.15, 1  # Red color
+                size_hint_y: None
+                height: dp(50)
+                halign: 'left'
+                text_size: self.width, None
+
+            # Notification setting
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                spacing: dp(10)
+                
+                Label:
+                    text: 'Notification'
+                    font_size: '18sp'
+                    color: 0.85, 0.15, 0.15, 1  # Red color
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.7
+                
+                Switch:
+                    id: notification_switch
+                    size_hint_x: 0.3
+                    active: True
+
+            # Clear Data
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                spacing: dp(10)
+                
+                Label:
+                    text: 'Clear Data'
+                    font_size: '18sp'
+                    color: 0.85, 0.15, 0.15, 1  # Red color
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.7
+                
+                Button:
+                    id: clear_data_button
+                    text: 'Clear'
+                    size_hint_x: 0.3
+                    background_normal: ''
+                    background_color: 0.85, 0.15, 0.15, 1  # Red color
+                    color: 1, 1, 1, 1
+                    font_size: '16sp'
+                    on_release: root.clear_data()
+                    canvas.before:
+                        Color:
+                            rgba: 0.85, 0.15, 0.15, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [5, 5, 5, 5]
+
+            # Sign Out
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                spacing: dp(10)
+                
+                Label:
+                    text: 'Sign Out'
+                    font_size: '18sp'
+                    color: 0.85, 0.15, 0.15, 1  # Red color
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.7
+                
+                Button:
+                    id: logout_button
+                    text: 'Log out'
+                    size_hint_x: 0.3
+                    background_normal: ''
+                    background_color: 0.85, 0.15, 0.15, 1  # Red color
+                    color: 1, 1, 1, 1
+                    font_size: '16sp'
+                    on_release: root.logout()
+                    canvas.before:
+                        Color:
+                            rgba: 0.85, 0.15, 0.15, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [5, 5, 5, 5]
+
+            # Spacer
+            Widget:
+                size_hint_y: None
+                height: dp(30)
+
+            # About Us section
+            Label:
+                text: 'About Us'
+                font_size: '22sp'
+                bold: True
+                color: 0.85, 0.15, 0.15, 1  # Red color
+                size_hint_y: None
+                height: dp(40)
+                halign: 'left'
+                text_size: self.width, None
+            
+            Label:
+                text: 'PolyCal is your smart, all-in-one event calendar app built to simplify your schedule. From school tasks to personal plans, PolyCal helps you stay organized with ease. Designed for everyday users who value time, our goal is to make planning simple, fast, and stress-free.\n\nYour schedule, your way — with PolyCal.'
+                font_size: '14sp'
+                color: 0.3, 0.3, 0.3, 1
+                size_hint_y: None
+                height: dp(180)
+                halign: 'left'
+                valign: 'top'
+                text_size: self.width, None
+                line_height: 1.2
+
+        # Navigation bar at the bottom
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            # Home button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'main'
+                Image:
+                    source: 'ICON/Home.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Calendar button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'calendar'
+                Image:
+                    source: 'ICON/Calendar.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Profile button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'profile'
+                Image:
+                    source: 'ICON/Profile.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Settings button (current screen - highlighted)
+            Button:
+                background_normal: ''
+                background_color: 0.12, 0.47, 0.95, 1  # Blue highlight for current screen
+                on_release: app.root.current = 'settings'
+                Image:
+                    source: 'ICON/Settings.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+<AdminScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1  # Light gray background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Red header with logo and title
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: dp(10)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Image:
+                source: 'PUPlogo.png'
+                size_hint_x: None
+                width: dp(40)
+                fit_mode: 'contain'
+
+            Label:
+                text: "PolyCal Admin"
+                font_size: '24sp'
+                bold: True
+                color: 1, 1, 1, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+                padding: [dp(10), 0]
+
+        # Main content area
+        BoxLayout:
+            orientation: 'vertical'
+            padding: [dp(20), dp(10), dp(20), dp(10)]
+
+            # Background PUP logo (faded and perfectly centered)
+            FloatLayout:
+                size_hint_y: None
+                height: 0
+                Image:
+                    source: 'PUPlogo.png'
+                    opacity: 0.15
+                    size_hint: None, None
+                    width: 400
+                    height: 400
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    fit_mode: 'contain'
+
+            # Welcome message
+            Label:
+                id: admin_welcome_label
+                text: 'Welcome, Admin!'
+                font_size: '28sp'
+                bold: True
+                color: 0.85, 0.15, 0.15, 1  # Red color
+                size_hint_y: None
+                height: dp(50)
+                halign: 'left'
+                text_size: self.width, None
+
+            # Add Event button
+            Button:
+                text: "Add Admin Event"
+                size_hint_y: None
+                height: dp(50)
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Red color
+                color: 1, 1, 1, 1
+                font_size: '18sp'
+                bold: True
+                on_release: root.show_add_admin_event_popup()
+                canvas.before:
+                    Color:
+                        rgba: 0.85, 0.15, 0.15, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10, 10, 10, 10]
+
+            # Events list
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+
+                BoxLayout:
+                    id: admin_event_list
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(5)
+
+        # Navigation bar at the bottom
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.15, 0.15, 1  # Red color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            # Home button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'main'
+                Image:
+                    source: 'ICON/Home.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Calendar button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'calendar'
+                Image:
+                    source: 'ICON/Calendar.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Profile button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'profile'
+                Image:
+                    source: 'ICON/Profile.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Admin button (current screen - highlighted)
+            Button:
+                background_normal: ''
+                background_color: 0.12, 0.47, 0.95, 1  # Blue highlight for current screen
+                on_release: app.root.current = 'admin'
+                Image:
+                    source: 'ICON/Settings.png'  # Using settings icon for admin
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
+
+            # Settings button
+            Button:
+                background_normal: ''
+                background_color: 0.85, 0.15, 0.15, 1  # Same as background
+                on_release: app.root.current = 'settings'
+                Image:
+                    source: 'ICON/Settings.png'
+                    center: self.parent.center
+                    size: dp(30), dp(30)
+                    fit_mode: 'contain'
